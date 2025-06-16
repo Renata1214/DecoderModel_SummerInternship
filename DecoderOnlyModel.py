@@ -93,11 +93,11 @@ def collate(batch):
 def sample_hparams():
     return {
         "d_model": random.choice([128, 256]),
-        "n_heads": random.choice([2, 4]),
-        "n_layers": random.choice([2, 4]),
+        "n_heads": 8,
+        "n_layers": 10,
         "lr": random.choice([1e-4, 5e-4]),
         "batch_size": random.choice([8, 16]),
-        "epochs": 3
+        "epochs": 100
     }
 
 # Generate
@@ -116,7 +116,7 @@ def generate(model, input_seq, max_len=32):
         return seq
 
 # Evaluate
-def evaluate(model, dataset, device, print_limit=5):
+def evaluate(model, dataset, device, print_limit=100000):
     correct, total, shown = 0, 0, 0
     for item in dataset:
         tokens = item["input_ids"]
@@ -223,7 +223,7 @@ for item in test_dataset:
     total_time += inference_time
     num_samples += 1
 
-    if num_samples <= 5:
+    if num_samples <= 1000:
         def tohex(x): return ''.join(f"{b:02x}" for b in x)
         print("\n🧪 Sample", num_samples)
         print("Query:              ", tohex(query[1:-1]))
